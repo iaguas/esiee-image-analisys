@@ -33,4 +33,4 @@
 *.su
 
 # Other parts of the project
-/bin/*
+/theory/
