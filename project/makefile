@@ -22,6 +22,7 @@ doc:    $(DOC)
 # ===============================================================
 
 $(BDIR)/addconst:	$(CDIR)/addconst.c $(IDIR)/laddconst.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/laddconst.o
+	mkdir -p bin
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/addconst.c $(ODIR)/laddconst.o $(ODIR)/mcimage.o -o $(BDIR)/addconst
 
 $(BDIR)/deriche:	$(CDIR)/deriche.c $(IDIR)/lderiche.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/lderiche.o
@@ -39,6 +40,7 @@ $(BDIR)/diffimage:	$(CDIR)/diffimage.c $(IDIR)/ldiffimage.h $(IDIR)/mcimage.h $(
 # ===============================================================
 
 $(ODIR)/mcimage.o:	$(LDIR)/mcimage.c $(IDIR)/mcimage.h
+	mkdir -p obj
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/mcimage.c -o $(ODIR)/mcimage.o
 
 # Operators:
@@ -66,4 +68,8 @@ $(DOCDIR)/tutorialEnglish.html: $(DOCDIR)/tutorialEnglish.tex
 
 clean:
 	rm -rf *~ $(ODIR)/* $(IDIR)/*~ $(CDIR)/*~ $(LDIR)/*~ $(DOCDIR)/*~ 
-	cd $(DOCDIR); rm -rf *.4ct *.4tc *.aux *.dvi *.idv *.lg *.log *.tmp *.xref 
+	cd $(DOCDIR); rm -rf *.4ct *.4tc *.aux *.dvi *.idv *.lg *.log *.tmp *.xref
+
+cleanall: 
+	rm -rf *~ $(BDIR) $(ODIR) $(IDIR)/*~ $(CDIR)/*~ $(LDIR)/*~ $(DOCDIR)/*~ 
+	cd $(DOCDIR); rm -rf *.4ct *.4tc *.aux *.dvi *.idv *.lg *.log *.tmp *.xref

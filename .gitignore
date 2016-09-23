@@ -33,4 +33,7 @@
 *.su
 
 # Other parts of the project
-/theory/
+.~*
+bin/
+theory/
+CGA_2016_21_aguasari/
