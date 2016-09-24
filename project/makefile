@@ -1,7 +1,7 @@
 EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm 
 DOC=$(DOCDIR)/tutorialEnglish.html
 
-CCFLAGS = -g -DUNIXIO -Wall
+CCFLAGS = -g -DUNIXIO -Wall -std=c99 -O
 
 IDIR = ./include
 ODIR = ./obj

@@ -12,6 +12,7 @@
 #include <string.h>
 #include <mcimage.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #define BUFFERSIZE 4096
 
@@ -86,7 +87,7 @@ struct xvimage *allocimage(
   g = (struct xvimage *)malloc(sizeof(struct xvimage));
   if (g == NULL)
   {   
-    fprintf(stderr,"%s : malloc failed (%d bytes)\n", F_NAME, sizeof(struct xvimage));
+    fprintf(stderr,"%s : malloc failed (%lu bytes)\n", F_NAME, sizeof(struct xvimage));
     return NULL;
   }
 
@@ -185,7 +186,7 @@ void writeascimage(struct xvimage * image, char *filename)
 #define F_NAME "writeascimage"
 {
   FILE *fd = NULL;
-  int32_t rs, cs, ps, d, nndg, N, i;
+  int32_t rs, cs, ps, d, /* nndg, */ N, i;
 
   fd = fopen(filename,"w");
   if (!fd)
@@ -228,7 +229,7 @@ void writeascimage(struct xvimage * image, char *filename)
     {
       if (i % rs == 0) fprintf(fd, "\n");
       if (i % ps == 0) fprintf(fd, "\n");
-      fprintf(fd, "%ld ", ULONGDATA(image)[i]);
+      fprintf(fd, "%u ", ULONGDATA(image)[i]);
     } /* for i */
     fprintf(fd, "\n");
   }
@@ -378,14 +379,18 @@ struct xvimage * readimage(char *filename)
       if (ndgmax == 255)
         for (i = 0; i < N; i++)
         {
-          fscanf(fd, "%d", &c);
-          UCHARDATA(image)[i] = (uint8_t)c;
+          if(fscanf(fd, "%d", &c))
+	    UCHARDATA(image)[i] = (uint8_t)c;
+          else
+            fprintf(stderr,"%s: problem using fscanf\n", F_NAME);
         } /* for i */
       else if (ndgmax == 65535)
         for (i = 0; i < N; i++)
         {
-          fscanf(fd, "%d", &c);
-          UCHARDATA(image)[i] = (uint8_t)(c/256);
+          if(fscanf(fd, "%d", &c))
+            UCHARDATA(image)[i] = (uint8_t)(c/256);
+          else
+            fprintf(stderr,"%s: problem using fscanf\n", F_NAME);
         } /* for i */
       else
       {
@@ -410,7 +415,8 @@ struct xvimage * readimage(char *filename)
     {
       for (i = 0; i < N; i++)
       {
-        fscanf(fd, "%ld", &(ULONGDATA(image)[i]));
+        if(!fscanf(fd, "%d", &(ULONGDATA(image)[i])))
+            fprintf(stderr,"%s: problem using fscanf\n", F_NAME);
       } /* for i */
     }
     else 
@@ -430,7 +436,8 @@ struct xvimage * readimage(char *filename)
     {
       for (i = 0; i < N; i++)
       {
-        fscanf(fd, "%f", &(FLOATDATA(image)[i]));
+        if(!fscanf(fd, "%f", &(FLOATDATA(image)[i])))
+            fprintf(stderr,"%s: problem using fscanf\n", F_NAME);
       } /* for i */
     }
     else 
@@ -461,7 +468,7 @@ int32_t readrgbimage(
 {
   char buffer[BUFFERSIZE];
   FILE *fd = NULL;
-  index_t rs, cs, i, ds;
+    index_t rs, cs, i;//, ds;
   index_t N;
   int32_t ascii = 0;  
   int32_t c;
@@ -502,11 +509,11 @@ int32_t readrgbimage(
   c = sscanf(buffer+2, "%d %d %d", (int *)&rs, (int *)&cs, (int *)&ndgmax);
 #endif
 
-  if (c == 3) /* format ppm MatLab : tout sur une ligne */
-  {
+  //if (c == 3) /* format ppm MatLab : tout sur une ligne */
+  /*{
     ds = 1;
     goto readdata;
-  }
+  }*/
 
 
 
@@ -538,7 +545,7 @@ int32_t readrgbimage(
   }
   sscanf(buffer, "%d", (int *)&nndg);
 
-  readdata:
+  //readdata:
   N = rs * cs;
 
   *r = allocimage(NULL, rs, cs, 1, VFF_TYP_1_BYTE);
@@ -552,12 +559,18 @@ int32_t readrgbimage(
   if (ascii)
     for (i = 0; i < N; i++)
     {
-      fscanf(fd, "%d", &c);
-      (UCHARDATA(*r))[i] = (uint8_t)c;
-      fscanf(fd, "%d", &c);
-      (UCHARDATA(*g))[i] = (uint8_t)c;
-      fscanf(fd, "%d", &c);
-      (UCHARDATA(*b))[i] = (uint8_t)c;
+      if(fscanf(fd, "%d", &c))
+	(UCHARDATA(*r))[i] = (uint8_t)c; 
+      else
+        fprintf(stderr,"%s: problem using fscanf\n", F_NAME);
+      if(fscanf(fd, "%d", &c))
+	(UCHARDATA(*g))[i] = (uint8_t)c; 
+      else
+        fprintf(stderr,"%s: problem using fscanf\n", F_NAME);
+      if(fscanf(fd, "%d", &c))
+	(UCHARDATA(*b))[i] = (uint8_t)c; 
+      else
+        fprintf(stderr,"%s: problem using fscanf\n", F_NAME);
     } /* for i */
   else
     for (i = 0; i < N; i++)

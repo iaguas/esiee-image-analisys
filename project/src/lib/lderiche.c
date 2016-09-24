@@ -98,7 +98,7 @@ uint32_t lderiche(struct xvimage *image, double alpha)
     alpha : parametre (1/taille) du filtre
 */
 { 
-  uint32_t i, j;
+    uint32_t i;//, j;
   uint8_t *ima = UCHARDATA(image);
   uint32_t rs = rowsize(image);
   uint32_t cs = colsize(image);
@@ -108,13 +108,13 @@ uint32_t lderiche(struct xvimage *image, double alpha)
   double *Imd;    /* image intermediaire */
   double *buf1;   /* buffer ligne ou colonne */
   double *buf2;   /* buffer ligne ou colonne */
-  double k;       /* constante de normalisation pour le lisseur */
-  double kp;      /* constante de normalisation pour le derivateur */
-  double e_a;     /* stocke exp(-alpha) */
-  double e_2a;    /* stocke exp(-2alpha) */
-  double a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, b3, b4;
-  double t1, t2;
-  double lmax, lmin;
+  //double k;       /* constante de normalisation pour le lisseur */
+  //double kp;      /* constante de normalisation pour le derivateur */
+  //double e_a;     /* stocke exp(-alpha) */
+  //double e_2a;    /* stocke exp(-2alpha) */
+  //double a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, b3, b4;
+  //double t1, t2;
+  //double lmax, lmin;
 
   if (depth(image) != 1) 
   {
