@@ -1,4 +1,4 @@
-EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm 
+EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/threshold $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm 
 DOC=$(DOCDIR)/tutorialEnglish.html
 
 CCFLAGS = -g -DUNIXIO -Wall -std=c99 -O
@@ -31,6 +31,8 @@ $(BDIR)/deriche:	$(CDIR)/deriche.c $(IDIR)/lderiche.h $(IDIR)/mcimage.h $(ODIR)/
 $(BDIR)/diffimage:	$(CDIR)/diffimage.c $(IDIR)/ldiffimage.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/ldiffimage.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/diffimage.c $(ODIR)/ldiffimage.o $(ODIR)/mcimage.o -o $(BDIR)/diffimage
 
+$(BDIR)/threshold:	$(CDIR)/threshold.c $(IDIR)/lthreshold.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/lthreshold.o
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/threshold.c $(ODIR)/lthreshold.o $(ODIR)/mcimage.o -o $(BDIR)/threshold
 
 # ===============================================================
 # Library functions 
@@ -54,6 +56,9 @@ $(ODIR)/lderiche.o:	$(LDIR)/lderiche.c $(IDIR)/lderiche.h $(IDIR)/mcimage.h
 
 $(ODIR)/ldiffimage.o:	$(LDIR)/ldiffimage.c $(IDIR)/ldiffimage.h $(IDIR)/mcimage.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/ldiffimage.c -o $(ODIR)/ldiffimage.o
+
+$(ODIR)/lthreshold.o:	$(LDIR)/lthreshold.c $(IDIR)/lthreshold.h $(IDIR)/mcimage.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lthreshold.c -o $(ODIR)/lthreshold.o
 
 $(BDIR)/ppm2pgm:	$(CDIR)/ppm2pgm.c $(IDIR)/mcimage.h $(LDIR)/mcimage.c
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/ppm2pgm.c  $(ODIR)/mcimage.o -o $(BDIR)/ppm2pgm

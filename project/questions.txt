@@ -1,0 +1,2 @@
+1. How can you test it?
+The idea is to use an image that must have the same size so that not make a violation of segment. Also, it could be a good idea to utilize the same image but with diferent filter in orther to watch the diference.
