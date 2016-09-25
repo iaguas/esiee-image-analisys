@@ -1,7 +1,7 @@
-EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/threshold $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm 
+EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/normalize $(BDIR)/threshold $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm 
 DOC=$(DOCDIR)/tutorialEnglish.html
 
-CCFLAGS = -g -DUNIXIO -Wall -std=c99 -O
+CCFLAGS = -g -DUNIXIO -Wall -std=c99 -O2
 
 IDIR = ./include
 ODIR = ./obj
@@ -14,8 +14,9 @@ CC = cc
 # Documentation, if not already comiled, can be compiled thanks to 'make doc'
 # You can also do a 'make clean' if you want
 
-all:	$(EXE)
+all:	$(EXE) 
 doc:    $(DOC)
+
 
 # ===============================================================
 # shell commands
@@ -31,8 +32,11 @@ $(BDIR)/deriche:	$(CDIR)/deriche.c $(IDIR)/lderiche.h $(IDIR)/mcimage.h $(ODIR)/
 $(BDIR)/diffimage:	$(CDIR)/diffimage.c $(IDIR)/ldiffimage.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/ldiffimage.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/diffimage.c $(ODIR)/ldiffimage.o $(ODIR)/mcimage.o -o $(BDIR)/diffimage
 
-$(BDIR)/threshold:	$(CDIR)/threshold.c $(IDIR)/lthreshold.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/lthreshold.o
-	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/threshold.c $(ODIR)/lthreshold.o $(ODIR)/mcimage.o -o $(BDIR)/threshold
+$(BDIR)/normalize:	$(CDIR)/normalize.c $(IDIR)/lnormalize.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lnormalize.o
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/normalize.c $(ODIR)/lnormalize.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/normalize
+
+$(BDIR)/threshold:	$(CDIR)/threshold.c $(IDIR)/lthreshold.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lthreshold.o
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/threshold.c $(ODIR)/lthreshold.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/threshold
 
 # ===============================================================
 # Library functions 
@@ -44,6 +48,9 @@ $(BDIR)/threshold:	$(CDIR)/threshold.c $(IDIR)/lthreshold.h $(IDIR)/mcimage.h $(
 $(ODIR)/mcimage.o:	$(LDIR)/mcimage.c $(IDIR)/mcimage.h
 	mkdir -p obj
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/mcimage.c -o $(ODIR)/mcimage.o
+	
+$(ODIR)/tools.o:	$(LDIR)/tools.c $(IDIR)/tools.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/tools.c -o $(ODIR)/tools.o
 
 # Operators:
 # ===============================================================
@@ -56,6 +63,9 @@ $(ODIR)/lderiche.o:	$(LDIR)/lderiche.c $(IDIR)/lderiche.h $(IDIR)/mcimage.h
 
 $(ODIR)/ldiffimage.o:	$(LDIR)/ldiffimage.c $(IDIR)/ldiffimage.h $(IDIR)/mcimage.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/ldiffimage.c -o $(ODIR)/ldiffimage.o
+	
+$(ODIR)/lnormalize.o:	$(LDIR)/lnormalize.c $(IDIR)/lnormalize.h $(IDIR)/mcimage.h $(IDIR)/tools.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lnormalize.c -o $(ODIR)/lnormalize.o
 
 $(ODIR)/lthreshold.o:	$(LDIR)/lthreshold.c $(IDIR)/lthreshold.h $(IDIR)/mcimage.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lthreshold.c -o $(ODIR)/lthreshold.o

@@ -1,30 +1,30 @@
 /******************************************************************/
-/* Threshold image function                                       */
+/* Normalize image function                                       */
 /* Project of Image analysis and processing - ESIEE               */
 /* Iñigo Aguas Ardaiz                                             */
-/* 20th September 2016                                            */
+/* 21th September 2016                                            */
 /******************************************************************/
-
+ 
 #include <stdio.h> 
 #include <stdint.h>
 #include <stdlib.h> 
 #include <mcimage.h>
 #include <tools.h>
-#include <lthreshold.h>
+#include <lnormalize.h>  
 
 /*
- *  INPUT: an grey scale image to make it combinate threshold and two threshold values.
+ *  INPUT: an grey scale image to make it normalization and two integer values.
  *  REQUISITES: both values must be between 0 and 255.
- *  OUTPUT: an image that is the combinate threshold of the original image.
+ *  OUTPUT: an image that is the normalization of the original image.
  */
-int main(int argc, char **argv) {
-    
+int main(int argc, char **argv) {  
+	
     int lowt, higt;
     struct xvimage *im, *endim;
  
     // Checking inputs
     if ((argc < 5) && (argc > 6)) {
-        fprintf(stderr, "usage: %s in.pgm low_threshold hig_threshold out.pgm [check.pgm]\n", argv[0]);
+        fprintf(stderr, "usage: %s in.pgm low_extrem hig_extrem out.pgm [check.pgm]\n", argv[0]);
         exit(1);
     }
  
@@ -38,12 +38,12 @@ int main(int argc, char **argv) {
     // Calculating image processing
     lowt = atoi(argv[2]);
     higt = atoi(argv[3]);
-    if (lthreshold(im,lowt,higt)){
-        fprintf(stderr, "%s: function lthreshold failed\n", argv[0]);
+    if (lnormalize(im,lowt,higt)) {
+        fprintf(stderr, "%s: function lnormalize failed\n", argv[0]);
         exit(3);
     }
-    
-    // Checking result ()
+ 
+    // Checking result
     if (argc == 6) {
         endim = readimage(argv[5]);
         if (checkEquals(im, endim))
