@@ -1,4 +1,4 @@
-EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/normalize $(BDIR)/threshold $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm 
+EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/equalize $(BDIR)/normalize $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/threshold
 DOC=$(DOCDIR)/tutorialEnglish.html
 
 CCFLAGS = -g -DUNIXIO -Wall -std=c99 -O2
@@ -32,6 +32,9 @@ $(BDIR)/deriche:	$(CDIR)/deriche.c $(IDIR)/lderiche.h $(IDIR)/mcimage.h $(ODIR)/
 $(BDIR)/diffimage:	$(CDIR)/diffimage.c $(IDIR)/ldiffimage.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/ldiffimage.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/diffimage.c $(ODIR)/ldiffimage.o $(ODIR)/mcimage.o -o $(BDIR)/diffimage
 
+$(BDIR)/equalize:	$(CDIR)/equalize.c $(IDIR)/lequalize.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lequalize.o
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/equalize.c $(ODIR)/lequalize.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/equalize
+
 $(BDIR)/normalize:	$(CDIR)/normalize.c $(IDIR)/lnormalize.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lnormalize.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/normalize.c $(ODIR)/lnormalize.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/normalize
 
@@ -63,7 +66,10 @@ $(ODIR)/lderiche.o:	$(LDIR)/lderiche.c $(IDIR)/lderiche.h $(IDIR)/mcimage.h
 
 $(ODIR)/ldiffimage.o:	$(LDIR)/ldiffimage.c $(IDIR)/ldiffimage.h $(IDIR)/mcimage.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/ldiffimage.c -o $(ODIR)/ldiffimage.o
-	
+
+$(ODIR)/lequalize.o:	$(LDIR)/lequalize.c $(IDIR)/lequalize.h $(IDIR)/mcimage.h $(IDIR)/tools.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lequalize.c -o $(ODIR)/lequalize.o
+
 $(ODIR)/lnormalize.o:	$(LDIR)/lnormalize.c $(IDIR)/lnormalize.h $(IDIR)/mcimage.h $(IDIR)/tools.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lnormalize.c -o $(ODIR)/lnormalize.o
 

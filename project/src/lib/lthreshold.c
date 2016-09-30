@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <mcimage.h>
+#include <tools.h>
 #include <lthreshold.h>
 
 /*
@@ -30,7 +31,7 @@ int lthreshold(struct xvimage* im, int lowt, int higt){
     N = rs*cs;
 	
     // Checking thresholds
-    if ((lowt<0 || lowt>255) || (higt<0 || higt>255)){
+    if ((lowt<0 || lowt>L-1) || (higt<0 || higt>L-1)){
         fprintf(stderr, "%s: threshold values out of range\n", F_NAME);
         return 1;
     }

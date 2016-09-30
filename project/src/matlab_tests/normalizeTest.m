@@ -1,6 +1,6 @@
 imorig = imread('../../img/blobs.pgm');
 imend = imread('../../img/blobsNormalize.pgm');
-imout = imread('../../out.pgm');
+imout = imread('../../img/out/outNormalize.pgm');
 
 checkEqualImg(imend, imout)
 

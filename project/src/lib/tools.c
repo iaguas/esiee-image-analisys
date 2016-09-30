@@ -19,9 +19,10 @@
  *  OUTPUT: the maximum pixel value of the image.
  */
 int impixmax(
-             unsigned char* pix,
-             int numelem) {
+             const unsigned char* pix,
+             const int numelem)
 /* ==================================== */
+{
     int i, max = pix[0];
    
     for (i=1; i<numelem; i++) {
@@ -39,8 +40,8 @@ int impixmax(
  */
 
 int impixmin(
-             unsigned char* pix,
-             int numelem)
+             const unsigned char* pix,
+             const int numelem)
 /* ==================================== */
 {
     int i, min = pix[0];
@@ -59,8 +60,8 @@ int impixmin(
  *  OUTPUT: a boolean that says if both images are equal or not.
  */
 int checkEquals(
-                struct xvimage* im1,
-                struct xvimage* im2)
+                const struct xvimage* im1,
+                const struct xvimage* im2)
 /* ==================================== */
 #undef F_NAME
 #define F_NAME "checkEquals"
@@ -85,3 +86,38 @@ int checkEquals(
     
     return eq;
 } // END checkEquals
+
+/* ====================================
+ *  INPUT: an image and the pointer of the exit.
+ *  REQUISITES: the image must be defined in the interval [0, 255]
+ *  OUTPUT: a vector of 256 positions with the frequency of each grey level.
+ *          Also an integer that says if the process is correctly done or not.
+ */
+int histogram(
+              const struct xvimage* im,
+              int** histp)
+/* ==================================== */
+#undef F_NAME
+#define F_NAME "histogram"
+{
+    int i;
+    int *hist;
+    const unsigned char *pim;
+    
+    const int N = im->row_size * im->col_size;
+    
+    // Crear el histograma a cero ES
+    hist = (int *) malloc(sizeof(int)*L);
+    for (i=0; i<L; i++) {
+        hist[i] = 0;
+    }
+    
+    // Guardamos el número de píxeles ES
+    pim = (unsigned char*)(im->image_data);
+    for (i=1; i<N; i++) {
+        hist[pim[i]] += 1;
+    }
+    *histp = hist;
+    
+    return 0;
+} // END histogram

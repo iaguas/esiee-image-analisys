@@ -5,6 +5,8 @@
 /* 21th September 2016                                            */
 /******************************************************************/
 
+#define L 256
+
 /*
  *  INPUT: a matrix with the pixeles of an image and the number of pixeles.
  *  REQUISITES: the number of pixeles must be real.
@@ -33,4 +35,15 @@ int impixmin(
 int checkEquals(
     struct xvimage* im1,
     struct xvimage* im2
+);
+
+/*
+ *  INPUT: an image and the pointer of the exit.
+ *  REQUISITES: the image must be defined in the interval [0, 255]
+ *  OUTPUT: a vector of 256 positions with the frequency of each grey level.
+ *          Also an integer that says if the process is correctly done or not.
+ */
+int histogram(
+    const struct xvimage* im,
+    int** histp
 );
