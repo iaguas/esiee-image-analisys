@@ -50,7 +50,7 @@ int lequalize(struct xvimage* im){
 		equalizer[i] = acum[i] * L;
 		
     pim = (unsigned char*)(im->image_data);	
-	for (i=0; i<L; i++)
+	for (i=0; i<N; i++)
 		pim[i] = (unsigned char) equalizer[pim[i]];
     
     return 0;

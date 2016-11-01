@@ -1,4 +1,4 @@
-EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/equalize $(BDIR)/normalize $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/threshold
+EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/equalize $(BDIR)/gammac $(BDIR)/log $(BDIR)/normalize $(BDIR)/power $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/threshold
 DOC=$(DOCDIR)/tutorialEnglish.html
 
 CCFLAGS = -g -DUNIXIO -Wall -std=c99 -O2
@@ -35,8 +35,17 @@ $(BDIR)/diffimage:	$(CDIR)/diffimage.c $(IDIR)/ldiffimage.h $(IDIR)/mcimage.h $(
 $(BDIR)/equalize:	$(CDIR)/equalize.c $(IDIR)/lequalize.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lequalize.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/equalize.c $(ODIR)/lequalize.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/equalize
 
+$(BDIR)/gammac:	$(CDIR)/gammac.c $(IDIR)/lgammac.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lgammac.o
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/gammac.c $(ODIR)/lgammac.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/gammac
+
+$(BDIR)/log:	$(CDIR)/log.c $(IDIR)/llog.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/llog.o
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/log.c $(ODIR)/llog.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/log
+
 $(BDIR)/normalize:	$(CDIR)/normalize.c $(IDIR)/lnormalize.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lnormalize.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/normalize.c $(ODIR)/lnormalize.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/normalize
+
+$(BDIR)/power:	$(CDIR)/power.c $(IDIR)/lpower.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lpower.o
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/power.c $(ODIR)/lpower.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/power
 
 $(BDIR)/threshold:	$(CDIR)/threshold.c $(IDIR)/lthreshold.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lthreshold.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/threshold.c $(ODIR)/lthreshold.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/threshold
@@ -70,8 +79,17 @@ $(ODIR)/ldiffimage.o:	$(LDIR)/ldiffimage.c $(IDIR)/ldiffimage.h $(IDIR)/mcimage.
 $(ODIR)/lequalize.o:	$(LDIR)/lequalize.c $(IDIR)/lequalize.h $(IDIR)/mcimage.h $(IDIR)/tools.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lequalize.c -o $(ODIR)/lequalize.o
 
+$(ODIR)/lgammac.o:	$(LDIR)/lgammac.c $(IDIR)/lgammac.h $(IDIR)/mcimage.h $(IDIR)/tools.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lgammac.c -o $(ODIR)/lgammac.o
+
+$(ODIR)/llog.o:	$(LDIR)/llog.c $(IDIR)/llog.h $(IDIR)/mcimage.h $(IDIR)/tools.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/llog.c -o $(ODIR)/llog.o
+
 $(ODIR)/lnormalize.o:	$(LDIR)/lnormalize.c $(IDIR)/lnormalize.h $(IDIR)/mcimage.h $(IDIR)/tools.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lnormalize.c -o $(ODIR)/lnormalize.o
+
+$(ODIR)/lpower.o:	$(LDIR)/lpower.c $(IDIR)/lpower.h $(IDIR)/mcimage.h $(IDIR)/tools.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lpower.c -o $(ODIR)/lpower.o
 
 $(ODIR)/lthreshold.o:	$(LDIR)/lthreshold.c $(IDIR)/lthreshold.h $(IDIR)/mcimage.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lthreshold.c -o $(ODIR)/lthreshold.o

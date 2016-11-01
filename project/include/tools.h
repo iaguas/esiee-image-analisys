@@ -5,7 +5,20 @@
 /* 21th September 2016                                            */
 /******************************************************************/
 
+// CONSTANTS
 #define L 256
+
+// BASICAL OPERATIONS
+// MAX
+#define max(a,b) \
+({ __typeof__ (a) _a = (a); \
+__typeof__ (b) _b = (b); \
+_a > _b ? _a : _b; })
+// MIN
+#define min(a,b) \
+({ __typeof__ (a) _a = (a); \
+__typeof__ (b) _b = (b); \
+_a < _b ? _a : _b; })
 
 /*
  *  INPUT: a matrix with the pixeles of an image and the number of pixeles.
@@ -13,8 +26,8 @@
  *  OUTPUT: the maximum pixel value of the image.
  */
 int impixmax(
-    unsigned char* pix,
-    int numelem
+    const unsigned char* pix,
+    const int numelem
 );
 
 /*
@@ -23,8 +36,8 @@ int impixmax(
  *  OUTPUT: the minimum pixel value of the image.
  */
 int impixmin(
-    unsigned char* pix,
-    int numelem
+    const unsigned char* pix,
+    const int numelem
 );
 
 /*
@@ -33,8 +46,8 @@ int impixmin(
  *  OUTPUT: a boolean that says if both images are equal or not.
  */
 int checkEquals(
-    struct xvimage* im1,
-    struct xvimage* im2
+    const struct xvimage* im1,
+    const struct xvimage* im2
 );
 
 /*

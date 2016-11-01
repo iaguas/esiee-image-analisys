@@ -13,6 +13,32 @@
 #include <mcimage.h>  
 #include <tools.h>
 
+//#define MIN(X,Y) (((X) < (Y)) ? (X) : (Y))
+//#define MAX(X,Y) (((X) < (Y)) ? (X) : (Y))
+//#ifndef max
+//#define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
+//#endif
+
+//#ifndef min
+//#define min( a, b ) ( ((a) < (b)) ? (a) : (b) )
+//#endif
+
+/*
+double dmax(
+            double a,
+            double b)
+{
+    return a > b;
+}
+
+double dmin(
+            double a,
+            double b)
+{
+    return a < b;
+}*/
+
+
 /* ====================================
  *  INPUT: a matrix with the pixeles of an image and the number of pixeles.
  *  REQUISITES: the number of pixeles must be real.
