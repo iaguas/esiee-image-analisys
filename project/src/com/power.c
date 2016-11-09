@@ -13,7 +13,7 @@
 #include <lpower.h>  
 
 /*
- *  INPUT: an grey scale image to make its power transformation.
+ *  INPUT: a grey scale image to make its power transformation.
  *  REQUISITES: none.
  *  OUTPUT: an image that is the power transformation of the original image.
  */

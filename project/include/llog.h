@@ -6,7 +6,7 @@
 /******************************************************************/
 
 /*
- *  INPUT: an grey scale image to make it log transformation.
+ *  INPUT: a grey scale image to make it log transformation.
  *  REQUISITES: none.
  *  OUTPUT: an image that is the log transformation of the original image.
  */

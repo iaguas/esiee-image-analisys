@@ -6,7 +6,7 @@
 /******************************************************************/
 
 /*
- *  INPUT: an grey scale image to make it gamma correction.
+ *  INPUT: a grey scale image to make it gamma correction.
  *  REQUISITES: none.
  *  OUTPUT: an image that is the gamma correction of the original image.
  */

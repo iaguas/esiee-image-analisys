@@ -13,7 +13,7 @@
 #include <lequalize.h>
 
 /*
- *  INPUT: an grey scale image to make it equalization.
+ *  INPUT: a grey scale image to make it equalization.
  *  REQUISITES: none.
  *  OUTPUT: an image that is the histogram equalization of the original image.
  */

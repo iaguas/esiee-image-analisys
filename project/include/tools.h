@@ -60,3 +60,22 @@ int histogram(
     const struct xvimage* im,
     int** histp
 );
+
+/*
+ *  INPUT: a position of the image an the dimension of it and of the filter.
+ *  REQUISITES: none.
+ *  OUTPUT: a boolean value that true means that not should be applied the filter.
+ */
+int isBorder(
+    const int position,
+    const int a,
+    const int rs);
+
+/*
+ *  INPUT: a filter and its size.
+ *  REQUISITES: the filter and the size must be correlated.
+ *  OUTPUT: the filter for a concret size to make the average filter.
+ */
+void generateAvgFilter(
+    double **filter,
+    const int size);

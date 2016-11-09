@@ -13,31 +13,7 @@
 #include <mcimage.h>  
 #include <tools.h>
 
-//#define MIN(X,Y) (((X) < (Y)) ? (X) : (Y))
-//#define MAX(X,Y) (((X) < (Y)) ? (X) : (Y))
-//#ifndef max
-//#define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
-//#endif
-
-//#ifndef min
-//#define min( a, b ) ( ((a) < (b)) ? (a) : (b) )
-//#endif
-
-/*
-double dmax(
-            double a,
-            double b)
-{
-    return a > b;
-}
-
-double dmin(
-            double a,
-            double b)
-{
-    return a < b;
-}*/
-
+// Some interesting macros for min, max and another math operations in .h file.
 
 /* ====================================
  *  INPUT: a matrix with the pixeles of an image and the number of pixeles.
@@ -147,3 +123,58 @@ int histogram(
     
     return 0;
 } // END histogram
+
+/* ====================================
+ *  INPUT: a position of the image an the dimension of it and of the filter.
+ *  REQUISITES: none.
+ *  OUTPUT: a boolean value that true means that not should be applied the filter.
+ */
+int isBorder(
+             const int position,
+             const int a,
+             const int rs)
+/* ==================================== */
+#undef F_NAME
+#define F_NAME "isBorder"
+{
+//      0    to   a-1     left border
+//    rs-1   to   rs-a    rigth border
+    int i, isBorder=0;
+    
+    i=0;
+    while (i<a && !isBorder) {
+        isBorder += (position % rs == i);
+        i++;
+    }
+    i=rs-1;
+    while (i>=rs-a && !isBorder) {
+        isBorder += (position % rs == i);
+        i--;
+    }
+    
+    return isBorder;
+} // END isBorder
+
+/* ====================================
+ *  INPUT: a filter pointer and its size.
+ *  REQUISITES: the filter and the size must be correlated.
+ *  OUTPUT: the filter for a concret size to make the average filter.
+ */
+void generateAvgFilter(
+                       double **filter,
+                       const int size)
+/* ==================================== */
+#undef F_NAME
+#define F_NAME "generateAvgFilter"
+{
+    double *f;
+    int i, len = size*size;
+    double weight = 1.0/len;
+    
+    f = (double *)malloc(len * sizeof(double));
+    
+    for (i=0; i<len; i++)
+        f[i] = weight;
+    
+    *filter = f;
+} // END generateAvgFilter

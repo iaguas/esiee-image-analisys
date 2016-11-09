@@ -6,7 +6,7 @@
 /******************************************************************/
 
 /*
- *  INPUT: an grey scale image to make it normalization and two integer values.
+ *  INPUT: a grey scale image to make it normalization and two integer values.
  *  REQUISITES: both values must be between 0 and 255.
  *  OUTPUT: an image that is the normalization of the original image.
  */

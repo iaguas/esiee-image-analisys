@@ -1,8 +1,8 @@
 /******************************************************************/
-/* Gamma correction image function                                */
+/* Laplacian filter image function                                */
 /* Project of Image analysis and processing - ESIEE               */
 /* Iñigo Aguas Ardaiz                                             */
-/* 28th September 2016                                            */
+/* 1st November 2016                                              */
 /******************************************************************/
  
 #include <stdio.h> 
@@ -10,16 +10,18 @@
 #include <stdlib.h> 
 #include <mcimage.h>
 #include <tools.h>
-#include <lgammac.h>  
+#include <lfilter.h>
 
 /*
- *  INPUT: a grey scale image to make it gamma correction.
+ *  INPUT: a grey scale image to calculate its laplacian filter.
  *  REQUISITES: none.
- *  OUTPUT: an image that is the gamma correction of the original image.
+ *  OUTPUT: an image that is the laplacian filter image in the route indicated.
  */
 int main(int argc, char **argv) {
 	
-    struct xvimage *im, *endim;
+    double fi[] = {0.0, 1.0, 0.0, 1.0, -4.0, 1.0, 0.0, 1.0, 0.0};
+    int size = 3;
+    struct xvimage *im, *endim, *outim = NULL;
  
     // Checking inputs
     if ((argc < 3) && (argc > 4)) {
@@ -33,10 +35,10 @@ int main(int argc, char **argv) {
         fprintf(stderr, "%s: read image failed\n", argv[0]);
         exit(2);
     }
- 
-    // Calculating image processing    
-    if (lgammac(im,1,0.5)) {
-        fprintf(stderr, "%s: function lgammac failed\n", argv[0]);
+    
+    // Calculating filter & image processing
+    if (lfilter(im, fi, size, &outim)) {
+        fprintf(stderr, "%s: function lfilter failed\n", argv[0]);
         exit(3);
     }
  
@@ -51,7 +53,8 @@ int main(int argc, char **argv) {
     }
  
     // Writing result and finishing
-    writeimage(im, argv[2]);
+    writeimage(outim, argv[2]);
+    freeimage(outim);
     freeimage(im);
  
     return 0;

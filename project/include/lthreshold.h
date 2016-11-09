@@ -6,7 +6,7 @@
 /******************************************************************/
 
 /*
- *  INPUT: an grey scale image to make it combinate threshold and two threshold values.
+ *  INPUT: a grey scale image to make it combinate threshold and two threshold values.
  *  REQUISITES: both values must be between 0 and 255.
  *  OUTPUT: an image that is the combinate threshold of the original image.
  */
