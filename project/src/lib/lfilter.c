@@ -37,7 +37,7 @@ int lfilter(const struct xvimage* im, const double* filter, const int size, stru
     pnewim = (unsigned char*)((*newim)->image_data);
     
     // Trataiment of the image
-    for (i=a*rs; i<N-a*rs; i++)
+    for (i=0; i<N; i++)
         // Normal Pixeles
         if(! isBorder(i, a, rs)) {
             l = 0;
@@ -47,15 +47,9 @@ int lfilter(const struct xvimage* im, const double* filter, const int size, stru
                     np += pim[i+j*rs+k] * filter[l++];
             pnewim[i] = (unsigned char) np;
         }
-        // Especial rows pixeles
+        // Especial pixeles
         else
             pnewim[i]=pim[i];
-    // Especial left columns pixeles
-    for (i=0; i<rs*a; i++)
-        pnewim[i]=pim[i];
-    // Espacial right columns pixeles
-    for (i=N-a*rs; i<N; i++)
-        pnewim[i]=pim[i];
     
     return 0;
 }

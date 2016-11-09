@@ -139,8 +139,10 @@ int isBorder(
 {
 //      0    to   a-1     left border
 //    rs-1   to   rs-a    rigth border
-    int i, isBorder=0;
+    int i, isBorder=0, N=rs*rs;
     
+    if((position < rs*a) || (position > N-a*rs))
+       isBorder=1;
     i=0;
     while (i<a && !isBorder) {
         isBorder += (position % rs == i);
