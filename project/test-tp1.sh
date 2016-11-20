@@ -4,21 +4,21 @@
 mkdir -p img/out
 echo "Starting all tests..."
 echo "Executing difference image function";
-./bin/diffimage img/blobs.pgm img/blobsEqualize.pgm img/out/outDiffimage.pgm
+./bin/diffimage img/tp1/blobs.pgm img/tp1/blobsEqualize.pgm img/tp1/out/outDiffimage.pgm
 echo "Executing threshold image function";
-./bin/threshold img/blobs.pgm 10 40 img/out/outThreshold.pgm img/blobsThreshold-10-40.pgm
+./bin/threshold img/tp1/blobs.pgm 10 40 img/tp1/out/outThreshold.pgm img/tp1/blobsThreshold-10-40.pgm
 echo "Executing normalize image function";
-./bin/normalize img/blobs.pgm 0 255 img/out/outNormalize.pgm img/blobsNormalize.pgm
+./bin/normalize img/tp1/blobs.pgm 0 255 img/tp1/out/outNormalize.pgm img/tp1/blobsNormalize.pgm
 echo "Executing equalize image function";
-./bin/equalize img/blobs.pgm img/out/outEqualize.pgm img/blobsEqualize.pgm
+./bin/equalize img/tp1/blobs.pgm img/tp1/out/outEqualize.pgm img/tp1/blobsEqualize.pgm
 echo "Executing gamma correction image function";
-./bin/gammac img/blobs.pgm img/out/outGamma0.5.pgm img/blobsGamma0.5.pgm
+./bin/gammac img/tp1/blobs.pgm img/tp1/out/outGamma0.5.pgm img/tp1/blobsGamma0.5.pgm
 echo "Executing log transformation image function";
-./bin/log img/blobs.pgm 1 img/out/outLog.pgm
+./bin/log img/tp1/blobs.pgm 1 img/tp1/out/outLog.pgm
 echo "Executing power transformation image function";
-./bin/power img/blobs.pgm 1 2 img/out/outPower.pgm img/blobsPower2.pgm
+./bin/power img/tp1/blobs.pgm 1 2 img/tp1/out/outPower.pgm img/tp1/blobsPower2.pgm
 echo "Executing average filter function";
-./bin/weightavg img/blobs.pgm 3 img/out/outAvgFilter.pgm
+./bin/weightavg img/tp1/blobs.pgm 17 img/tp1/out/outAvgFilter.pgm
 echo "Executing laplacian filter function";
-./bin/laplacian img/blobs.pgm img/out/outLaplacianFilter.pgm
+./bin/laplacian img/tp1/blobs.pgm img/tp1/out/outLaplacianFilter.pgm
 echo "All tests done!"
