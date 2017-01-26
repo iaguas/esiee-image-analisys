@@ -132,7 +132,8 @@ int histogram(
 int isBorder(
              const int position,
              const int a,
-             const int rs)
+             const int rs,
+             const int cs)
 /* ==================================== */
 #undef F_NAME
 #define F_NAME "isBorder"

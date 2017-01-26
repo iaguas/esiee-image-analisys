@@ -1,4 +1,4 @@
-EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/equalize $(BDIR)/gammac $(BDIR)/laplacian $(BDIR)/log $(BDIR)/normalize $(BDIR)/power $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/threshold $(BDIR)/weightavg
+EXE=$(BDIR)/addconst $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/equalize $(BDIR)/gammac $(BDIR)/log $(BDIR)/normalize $(BDIR)/power $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/threshold $(BDIR)/weightavg
 DOC=$(DOCDIR)/tutorialEnglish.html
 
 CCFLAGS = -g -DUNIXIO -Wall -std=c99 -O2
@@ -38,9 +38,6 @@ $(BDIR)/equalize:	$(CDIR)/equalize.c $(IDIR)/lequalize.h $(IDIR)/mcimage.h $(IDI
 $(BDIR)/gammac:	$(CDIR)/gammac.c $(IDIR)/lgammac.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lgammac.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/gammac.c $(ODIR)/lgammac.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/gammac
 
-$(BDIR)/laplacian:	$(CDIR)/laplacian.c $(IDIR)/lfilter.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lfilter.o
-	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/laplacian.c $(ODIR)/lfilter.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/laplacian
-
 $(BDIR)/log:	$(CDIR)/log.c $(IDIR)/llog.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/llog.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/log.c $(ODIR)/llog.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/log
 
@@ -53,8 +50,8 @@ $(BDIR)/power:	$(CDIR)/power.c $(IDIR)/lpower.h $(IDIR)/mcimage.h $(IDIR)/tools.
 $(BDIR)/threshold:	$(CDIR)/threshold.c $(IDIR)/lthreshold.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lthreshold.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/threshold.c $(ODIR)/lthreshold.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/threshold
 
-$(BDIR)/weightavg:	$(CDIR)/weightavg.c $(IDIR)/lfilter.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lfilter.o
-	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/weightavg.c $(ODIR)/lfilter.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/weightavg
+$(BDIR)/weightavg:	$(CDIR)/weightavg.c $(IDIR)/lweightavg.h $(IDIR)/lfilter.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lweightavg.o $(ODIR)/lfilter.o
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/weightavg.c $(ODIR)/lweightavg.o $(ODIR)/lfilter.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/weightavg
 
 # ===============================================================
 # Library functions 
@@ -85,6 +82,9 @@ $(ODIR)/ldiffimage.o:	$(LDIR)/ldiffimage.c $(IDIR)/ldiffimage.h $(IDIR)/mcimage.
 $(ODIR)/lequalize.o:	$(LDIR)/lequalize.c $(IDIR)/lequalize.h $(IDIR)/mcimage.h $(IDIR)/tools.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lequalize.c -o $(ODIR)/lequalize.o
 
+$(ODIR)/lfilter.o:	$(LDIR)/lfilter.c $(IDIR)/lfilter.h $(IDIR)/mcimage.h $(IDIR)/tools.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lfilter.c -o $(ODIR)/lfilter.o
+
 $(ODIR)/lgammac.o:	$(LDIR)/lgammac.c $(IDIR)/lgammac.h $(IDIR)/mcimage.h $(IDIR)/tools.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lgammac.c -o $(ODIR)/lgammac.o
 
@@ -100,8 +100,8 @@ $(ODIR)/lpower.o:	$(LDIR)/lpower.c $(IDIR)/lpower.h $(IDIR)/mcimage.h $(IDIR)/to
 $(ODIR)/lthreshold.o:	$(LDIR)/lthreshold.c $(IDIR)/lthreshold.h $(IDIR)/mcimage.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lthreshold.c -o $(ODIR)/lthreshold.o
 
-$(ODIR)/lfilter.o:	$(LDIR)/lfilter.c $(IDIR)/lfilter.h $(IDIR)/mcimage.h
-	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lfilter.c -o $(ODIR)/lfilter.o
+$(ODIR)/lweightavg.o:	$(LDIR)/lweightavg.c $(IDIR)/lweightavg.h $(IDIR)/lfilter.h $(IDIR)/mcimage.h 
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lweightavg.c -o $(ODIR)/lweightavg.o
 
 $(BDIR)/ppm2pgm:	$(CDIR)/ppm2pgm.c $(IDIR)/mcimage.h $(LDIR)/mcimage.c
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/ppm2pgm.c  $(ODIR)/mcimage.o -o $(BDIR)/ppm2pgm
@@ -119,5 +119,5 @@ clean:
 	cd $(DOCDIR); rm -rf *.4ct *.4tc *.aux *.dvi *.idv *.lg *.log *.tmp *.xref
 
 cleanall: 
-	rm -rf *~ $(BDIR) $(ODIR) $(IDIR)/*~ $(CDIR)/*~ $(LDIR)/*~ $(DOCDIR)/*~ img/out
+	rm -rf *~ $(BDIR)/* $(ODIR)/* $(IDIR)/*~ $(CDIR)/*~ $(LDIR)/*~ $(DOCDIR)/*~ 
 	cd $(DOCDIR); rm -rf *.4ct *.4tc *.aux *.dvi *.idv *.lg *.log *.tmp *.xref

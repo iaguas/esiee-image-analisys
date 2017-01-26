@@ -69,7 +69,8 @@ int histogram(
 int isBorder(
     const int position,
     const int a,
-    const int rs);
+    const int rs,
+    const int cs);
 
 /*
  *  INPUT: a filter and its size.

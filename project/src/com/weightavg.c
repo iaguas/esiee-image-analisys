@@ -11,6 +11,7 @@
 #include <mcimage.h>
 #include <tools.h>
 #include <lfilter.h>
+#include <lweightavg.h>
 
 /*
  *  INPUT: a grey scale image to calculate its average filter.

@@ -32,6 +32,19 @@
 *.dSYM/
 *.su
 
+# LaTeX/pdfLaTeX files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.dvi
+*.pygstyle
+*.pygtex
+*.fdb*
+
 # Other parts of the project
 .~*
 bin/

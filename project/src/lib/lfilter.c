@@ -39,7 +39,7 @@ int lfilter(const struct xvimage* im, const double* filter, const int size, stru
     // Trataiment of the image
     for (i=0; i<N; i++)
         // Normal Pixeles
-        if(! isBorder(i, a, rs)) {
+        if(! isBorder(i, a, rs, cs)) {
             l = 0;
             np = 0;
             for (j=-a; j<a; j++)
