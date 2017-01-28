@@ -1,7 +1,7 @@
 #!/bin/bash
 # Script to test all the functions
 
-mkdir -p img/out
+mkdir -p img/tp1/out
 echo "Starting all tests..."
 echo "Executing difference image function";
 ./bin/diffimage img/tp1/blobs.pgm img/tp1/blobsEqualize.pgm img/tp1/out/outDiffimage.pgm

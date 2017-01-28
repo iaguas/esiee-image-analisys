@@ -138,9 +138,10 @@ int isBorder(
 #undef F_NAME
 #define F_NAME "isBorder"
 {
+// TODO: Not only for square images.
 //      0    to   a-1     left border
 //    rs-1   to   rs-a    rigth border
-    int i, isBorder=0, N=rs*rs;
+    int i, isBorder=0, N=rs*cs;
     
     if((position < rs*a) || (position > N-a*rs))
        isBorder=1;
