@@ -1,7 +1,10 @@
-EXE=$(BDIR)/addconst $(BDIR)/avgfilter $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/equalize $(BDIR)/gammac $(BDIR)/log $(BDIR)/normalize $(BDIR)/power $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/threshold $(BDIR)/weightavg
+EXE=$(BDIR)/addconst $(BDIR)/avgfilter $(BDIR)/avgfilter_color $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/equalize \
+$(BDIR)/gammac $(BDIR)/log $(BDIR)/normalize $(BDIR)/power $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/threshold $(BDIR)/weightavg
+
 DOC=$(DOCDIR)/tutorialEnglish.html
 
 CCFLAGS = -g -DUNIXIO -Wall -std=c99 -O2
+CCINCLUDE = -lm
 
 IDIR = ./include
 ODIR = ./obj
@@ -28,6 +31,9 @@ $(BDIR)/addconst:	$(CDIR)/addconst.c $(IDIR)/laddconst.h $(IDIR)/mcimage.h $(ODI
 
 $(BDIR)/avgfilter:	$(CDIR)/avgfilter.c $(IDIR)/lavgfilter.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lavgfilter.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/avgfilter.c $(ODIR)/lavgfilter.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/avgfilter
+
+$(BDIR)/avgfilter_color:	$(CDIR)/avgfilter_color.c $(IDIR)/lavgfilter.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lavgfilter.o
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/avgfilter_color.c $(ODIR)/lavgfilter.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/avgfilter_color
 
 $(BDIR)/deriche:	$(CDIR)/deriche.c $(IDIR)/lderiche.h $(IDIR)/mcimage.h $(ODIR)/mcimage.o $(ODIR)/lderiche.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/deriche.c $(ODIR)/lderiche.o $(ODIR)/mcimage.o -lm -o $(BDIR)/deriche

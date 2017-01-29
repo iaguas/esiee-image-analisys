@@ -1,8 +1,8 @@
 /******************************************************************/
-/* Filter image application function                              */
+/* Average filter image application function                      */
 /* Project of Image analysis and processing - ESIEE               */
 /* Iñigo Aguas Ardaiz                                             */
-/* 30th September 2016                                            */
+/* 20th November 2016                                             */
 /******************************************************************/
 
 #include <stdio.h>
@@ -12,88 +12,93 @@
 #include <tools.h>
 #include <lavgfilter.h>
 
+//#define VERBOSE
+
 /*      
  *  INPUT: a grey scale image to make to apply a filter introduced too.
- *  REQUISITES: the size and the filter must be correlated.
+ *  REQUISITES: the size and the filter must be correlated. Windows must be smaller than images.
  *  OUTPUT: an image with the filter introduced applied.
  */
-int lavgfilter(const struct xvimage* im, const int size, struct xvimage** newim){
+int lavgfilter(const struct xvimage* im, const int fsize, struct xvimage** newim){
 
-    int i, j, k;
-    int a, sqrsize, specialsize;
+    int i, j, pixindex;
+    int a, sqfsize, specialfsize;
     int rs, cs, N;
     int ilimup, ilimdw, jlimup, jlimdw;
-    long int np;
-    //unsigned char *pim;
-    //struct xvimage * image;
+    long int sumpix;
+    unsigned char *pim, *pnewim;
 
     // Inicialization of image parameters
-    rs = im->row_size;
-    cs = im->col_size;
+    rs = rowsize(im);
+    cs = colsize(im);
     N = rs*cs;
-    a = size / 2;
-    sqrsize = size * size;
+    a = fsize / 2;
+    sqfsize = fsize * fsize;
 
-  //  pim = (unsigned char*)(im->image_data);
-        
-
-    printf("Esto es a %d y por tanto sqrsize %d\n", a, sqrsize);
     // Inicialitazion of a new image
     *newim = allocimage(NULL, rs, cs, 1, VFF_TYP_1_BYTE);
     if (newim == NULL) {   
         fprintf(stderr,"lavgfilter: image alloc failed\n");
-        return(1);
+        return 2;
     }
-   // pnewim = (unsigned char*)((image)->image_data);
+
+    // Pointers of images
+    pim = (UCHARDATA(im));
+    pnewim = (UCHARDATA(*newim));
 
     // Trataiment of each pixel of image
-    for (k=0; k<N; k++) {
-        np=0;
+    for (pixindex=0; pixindex<N; pixindex++) {
+        sumpix=0;
 
-        // Normal Pixeles
-        if(! isBorder(k, a, rs, cs)) {
+        // Normal pixels
+        if(! isBorder(pixindex, a, rs, cs)) {
             for (i=-a; i<=a; i++)
-                for (j=-a; j<=a; j++) {
-                    //printf("%d · %d · %d \n", i, j, k);
-                    np += (UCHARDATA(im))[k+(i*rs)+j];
-                }
-            (UCHARDATA(*newim))[k] =  np / sqrsize;
-            //printf("%d · %d\n",np / sqrsize, (UCHARDATA(*newim))[i]);
+                for (j=-a; j<=a; j++)
+                    sumpix += pim[pixindex + (i*rs) + j];
+            pnewim[pixindex] =  sumpix / sqfsize;
         }
 
+        // Corner pixels
         else {
             // Rows
-            if (k < rs*a) {
-                ilimdw = k%rs ? -k/(rs*a)-1 : -k/(rs*a);
+            if (pixindex < rs*a) {
+                ilimdw = pixindex % rs ? -pixindex/(rs*a)-1 : -pixindex/(rs*a);
                 ilimup = a; // This could be dangerous if the windows is greater than the image. That is stupid.
             }
-            else if (k > N-a*rs) {
+            else if (pixindex > N-a*rs) {
                 ilimdw = -a;
-                ilimup = k%rs ? k/(rs*a)+1 : k/(rs*a);
+                ilimup = pixindex % rs ? pixindex/(rs*a)+1 : pixindex/(rs*a);
             }
+            else {
+                ilimdw = -a;
+                ilimup = a;
+            }
+
             // Colums
-            if (k%rs < a) {
-                jlimdw = k%rs ? -k/(rs*a)-1 : -k/(rs*a);
+            if (pixindex % rs < a) {
+                jlimdw = pixindex % rs ? -pixindex/(rs*a)-1 : -pixindex/(rs*a);
                 jlimup = a;
             }
-            else if (k%rs >= rs-a) {
+            else if (pixindex % rs >= rs-a) {
                 jlimdw = -a;
-                jlimup = k%rs ? k/(rs*a)+1 : k/(rs*a);
+                jlimup = pixindex % rs ? pixindex/(rs*a)+1 : pixindex/(rs*a);
+            }
+            else {
+                jlimdw = -a;
+                jlimup = a;
             }
 
-            specialsize = 0;
+            specialfsize = 0;
             for (i=ilimdw; i<=ilimup; i++)
                 for (j=jlimdw; j<=jlimup; j++){
-                    //printf("%d · %d · %d · %d · %d · %d · %d\n", k, i, j, ilimdw, ilimup, jlimdw, jlimup);
-
-                    np += (UCHARDATA(im))[k+i*rs+j];
-                    specialsize++;
+                    #ifdef VERBOSE
+                        printf("%d · %d · %d · %d · %d · %d · %d\n", pixindex, i, j, ilimdw, ilimup, jlimdw, jlimup);
+                    #endif
+                    sumpix += pim[pixindex + i*rs + j];
+                    specialfsize++;
                 }
-            (UCHARDATA(*newim))[k] =  np / specialsize;
+            pnewim[pixindex] =  sumpix / specialfsize;
         }
-
-//        if(k>rs*(cs-20))
- //           break;
     }
     return 0;
 }

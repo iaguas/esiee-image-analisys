@@ -1,8 +1,8 @@
 /******************************************************************/
-/* Weight average filter image function                           */
+/* Average filter image application function                      */
 /* Project of Image analysis and processing - ESIEE               */
 /* Iñigo Aguas Ardaiz                                             */
-/* 30th September 2016                                            */
+/* 20th November 2016                                             */
 /******************************************************************/
  
 #include <stdio.h> 
