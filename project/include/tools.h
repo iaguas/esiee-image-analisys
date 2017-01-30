@@ -108,3 +108,29 @@ int genCGAParameters(
     struct cgaparam *params,
     const char grayscale
 );
+
+/* 
+ *  INPUT: clean and filtered images and padding (if is needed, else 0).
+ *  REQUISITES: none.
+ *  OUTPUT: Its PSNR value.
+ */
+double psnr(
+    struct xvimage *imorig, 
+    struct xvimage *imfilt, 
+    const int a
+);
+
+/* 
+ *  INPUT: clean and filtered color images and padding (if is needed, else 0).
+ *  REQUISITES: none.
+ *  OUTPUT: Its PSNR value.
+ */
+double psnr_color(
+    struct xvimage *imorigr, 
+    struct xvimage *imorigg, 
+    struct xvimage *imorigb, 
+    struct xvimage *imfiltr, 
+    struct xvimage *imfiltg, 
+    struct xvimage *imfiltb, 
+    const int a
+);

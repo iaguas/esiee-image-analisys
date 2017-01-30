@@ -1,5 +1,5 @@
 /******************************************************************/
-/* Weight filter image function                                   */
+/* Average filter image application function                      */
 /* Project of Image analysis and processing - ESIEE               */
 /* Iñigo Aguas Ardaiz                                             */
 /* 28th January 2017                                              */
@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
 	
     int fsize;
     struct xvimage *r, *g, *b, *outr, *outg, *outb;
- 
+
     // Checking inputs
     if (argc < 4) {
         fprintf(stderr, "usage: %s in.ppm out.ppm filter_size\n", argv[0]);
@@ -37,11 +37,15 @@ int main(int argc, char **argv) {
 
     // Calculating filter & image processing
     fsize = atoi(argv[3]);
+    printf("Executing average filer for color image with window size = %d\n", fsize);
     if (lavgfilter(r, fsize, &outr) || lavgfilter(g, fsize, &outg) || lavgfilter(b, fsize, &outb)) {
         fprintf(stderr, "%s: function lavgfilter failed in at least one of channels\n", argv[0]);
         exit(3);
     }
  
+    // Checking result
+    printf("PSNR value is: %f.\n", psnr_color(r, g, b, outr, outg, outb, fsize));
+
     // Writing result and finishing
     writergbimage(outr, outg, outb, argv[2]);
     freeimage(r);

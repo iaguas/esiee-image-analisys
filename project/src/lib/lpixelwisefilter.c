@@ -44,7 +44,7 @@ int lpixelwisefilter(const struct xvimage* im, const double sigma, struct xvimag
     cs = colsize(im);
     N = rs*cs;
 
-    // Inicialitazion of a new image
+    // Creation of a new image
     *newim = allocimage(NULL, rs, cs, 1, VFF_TYP_1_BYTE);
     if (*newim == NULL) {   
         fprintf(stderr,"lpixelwisefilter: image alloc failed\n");
@@ -59,7 +59,7 @@ int lpixelwisefilter(const struct xvimage* im, const double sigma, struct xvimag
     for (pixindex=0; pixindex < rs*cs; pixindex++) {
     
         // Normal pixels
-        if(! isBorder(pixindex, r+f, rs, cs)) { // There isn't problem with other windows inside because all will have all the pixels that it needs.
+        if(! isBorder(pixindex, r, rs, cs)) { // There isn't problem with other windows inside because all will have all the pixels that it needs.
 
             sum_w = 0.0;
             sum_uw = 0.0;
@@ -82,7 +82,7 @@ int lpixelwisefilter(const struct xvimage* im, const double sigma, struct xvimag
                     sum_uw += pim[newpixindex] * w;
                 }
             }
-            pnewim[pixindex] = (char) 1/sum_w * sum_uw; // REVISAR
+            pnewim[pixindex] = (char) roundf(1/sum_w * sum_uw);
         }
         else {
             pnewim[pixindex] = 0; // It could be tryed something similar of average filter.
@@ -90,3 +90,25 @@ int lpixelwisefilter(const struct xvimage* im, const double sigma, struct xvimag
     }
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
   //  double *fi;
     int fsize;
     struct xvimage *im, *outim = NULL;
- 
+
     // Checking inputs
     if (argc < 4) {
         fprintf(stderr, "usage: %s in.pgm out.pgm\n filter_size", argv[0]);
@@ -38,10 +38,14 @@ int main(int argc, char **argv) {
 
     // Calculating filter & image processing
     fsize = atoi(argv[3]);
+    printf("Executing average filer for gray scale image with window size = %d\n", fsize);
     if (lavgfilter(im, fsize, &outim)) {
         fprintf(stderr, "%s: function lavgfilter failed\n", argv[0]);
         exit(3);
     }
+
+    // Checking result
+    printf("PSNR value is: %f.\n", psnr(im, outim, fsize));
  
     // Writing result and finishing
     writeimage(outim, argv[2]);

@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <math.h>
 #include <mcimage.h>  
 #include <tools.h>
 
@@ -183,8 +184,6 @@ void generateAvgFilter(
     *filter = f;
 } // END generateAvgFilter
 
-
-
 /* ====================================
  *  INPUT: value of sigma and if image is grayscale (1) or not (0).
  *  REQUISITES: none.
@@ -245,4 +244,81 @@ int genCGAParameters(
             return 1;
 
     return 0;
-}
+} // END genCGAParameters
+
+/* ====================================
+ *  INPUT: clean and filtered images and padding (if is needed, else 0).
+ *  REQUISITES: none.
+ *  OUTPUT: Its PSNR value.
+ */
+double psnr(
+            struct xvimage *imorig, 
+            struct xvimage *imfilt, 
+            const int a)
+/* ==================================== */
+#undef F_NAME
+#define F_NAME "psnr"
+{
+    int i, j;
+    const int rs = rowsize(imorig), cs = colsize(imorig);
+    const int pixelstreated = (rs - 2*a) * (cs - 2*a);
+    double mxpeak = -1.0;
+    double mse = 0.0;
+
+    const unsigned char *pimorig = UCHARDATA(imorig);
+    const unsigned char *pimfilt = UCHARDATA(imfilt);
+
+    for (i=a; i<(rs-a); i++) {
+        for (j=a; j<(cs-a); j++) {
+            mse += pow((pimorig[i*rs + j] - pimfilt[i*rs + j]), 2.0);
+            if (mxpeak < pimorig[i*rs + j]) { // Peak value
+                mxpeak = pimorig[i*rs + j];
+            }
+        }
+    }
+
+    mse = (1.0 / pixelstreated) * mse;
+    return 10.0 * log10((mxpeak*mxpeak) / mse);
+} // END psnr
+
+/* ====================================
+ *  INPUT: clean and filtered color images and padding (if is needed, else 0).
+ *  REQUISITES: none.
+ *  OUTPUT: Its PSNR value.
+ */
+double psnr_color(
+                  struct xvimage *imorigr, 
+                  struct xvimage *imorigg, 
+                  struct xvimage *imorigb, 
+                  struct xvimage *imfiltr, 
+                  struct xvimage *imfiltg, 
+                  struct xvimage *imfiltb, 
+                  const int a)
+/* ==================================== */
+#undef F_NAME
+#define F_NAME "psnr_color"
+{
+    int i, j;
+    const int rs = rowsize(imorigr), cs = colsize(imorigr);
+    const int pixelstreated = (rs - 2*a) * (cs - 2*a);
+    double mxpeak=-255.0;
+    double mser=0.0, mseg=0.0, mseb=0.0, mse;
+
+    const unsigned char *pimorigr = UCHARDATA(imorigr);
+    const unsigned char *pimorigg = UCHARDATA(imorigg);
+    const unsigned char *pimorigb = UCHARDATA(imorigb);
+    const unsigned char *pimfiltr = UCHARDATA(imfiltr);
+    const unsigned char *pimfiltg = UCHARDATA(imfiltg);
+    const unsigned char *pimfiltb = UCHARDATA(imfiltb);
+
+    for (i=a; i<(rs-a); i++) {
+        for (j=a; j<(cs-a); j++) {
+            mser += pow((pimorigr[i*rs + j] - pimfiltr[i*rs + j]), 2.0);
+            mseg += pow((pimorigg[i*rs + j] - pimfiltg[i*rs + j]), 2.0);
+            mseb += pow((pimorigb[i*rs + j] - pimfiltb[i*rs + j]), 2.0);
+        }
+    }
+
+    mse = (1.0 / (3*pixelstreated)) * (mser + mseg + mseb);
+    return 10.0 * log10((mxpeak*mxpeak) / mse);
+} // END psnr_color

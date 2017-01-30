@@ -6,7 +6,7 @@
 /******************************************************************/
 
 /*      
- *  INPUT: a grey scale image to make to apply a filter witch size is introduced too.
+ *  INPUT: a color image to make to apply a filter witch sigma is introduced too.
  *  REQUISITES: 
  *  OUTPUT: an image with filter applied.
  */

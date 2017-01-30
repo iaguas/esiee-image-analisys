@@ -2,7 +2,7 @@
 /* Pixelwise implementation filter color image function           */
 /* Project of Image analysis and processing - ESIEE               */
 /* Iñigo Aguas Ardaiz                                             */
-/* 28th January 2017                                              */
+/* 29th January 2017                                              */
 /******************************************************************/
 
 #include <stdio.h>
@@ -14,7 +14,7 @@
 #include <lpixelwisefilter_color.h>
 
 /*      
- *  INPUT: a grey scale image to make to apply a filter witch size is introduced too.
+ *  INPUT: a color image to make to apply a filter witch sigma is introduced too.
  *  REQUISITES: 
  *  OUTPUT: an image with filter applied.
  */
@@ -32,20 +32,19 @@ int lpixelwisefilter_color(const struct xvimage* imr, const struct xvimage* img,
     params.sigma = sigma;
 
     // Inicialization of image parameters
-    if(genCGAParameters(&params, 1)) {   
+    if(genCGAParameters(&params, 0)) {   
         fprintf(stderr,"lpixelwisefilter_color: parameters creation problem. Sigma value not valid.\n");
-       // return 2;
+        return 2;
     }
     f = params.winsize/2; 
     r = params.rewinsize/2;
     h = params.h;
-    //printf("f: %d, r: %d, \n", );
     const_dist = 1.0 / (3*(2*f+1)*(2*f+1));
     rs = rowsize(imr);
     cs = colsize(imr);
     N = rs*cs;
 
-    // Inicialitazion of a new image
+    // Creation of a new image
     *newr = allocimage(NULL, rs, cs, 1, VFF_TYP_1_BYTE);
     *newg = allocimage(NULL, rs, cs, 1, VFF_TYP_1_BYTE);
     *newb = allocimage(NULL, rs, cs, 1, VFF_TYP_1_BYTE);
@@ -66,7 +65,7 @@ int lpixelwisefilter_color(const struct xvimage* imr, const struct xvimage* img,
     for (pixindex=0; pixindex < rs*cs; pixindex++) {
     
         // Normal pixels
-        if(! isBorder(pixindex, r+f, rs, cs)) { // There isn't problem with other windows inside because all will have all the pixels that it needs.
+        if(! isBorder(pixindex, r, rs, cs)) { // There isn't problem with other windows inside because all will have all the pixels that it needs.
 
             sum_w = 0.0;
             sum_uwr = 0.0;
@@ -98,9 +97,9 @@ int lpixelwisefilter_color(const struct xvimage* imr, const struct xvimage* img,
                     sum_uwb += pimb[newpixindex] * w;
                 }
             }
-            pnewr[pixindex] = (char) 1/sum_w * sum_uwr; // REVISAR
-            pnewg[pixindex] = (char) 1/sum_w * sum_uwg; // REVISAR
-            pnewb[pixindex] = (char) 1/sum_w * sum_uwb; // REVISAR
+            pnewr[pixindex] = (char) roundf(1/sum_w * sum_uwr);
+            pnewg[pixindex] = (char) roundf(1/sum_w * sum_uwg);
+            pnewb[pixindex] = (char) roundf(1/sum_w * sum_uwb);
         }
         else {
             pnewr[pixindex] = 0; // It could be tryed something similar of average filter.
