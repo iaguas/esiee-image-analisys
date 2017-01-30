@@ -1,7 +1,7 @@
 EXE=$(BDIR)/addconst $(BDIR)/avgfilter $(BDIR)/avgfilter_color $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/equalize \
-	$(BDIR)/gammac $(BDIR)/log $(BDIR)/normalize $(BDIR)/pixelwisefilter $(BDIR)/power $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm \
-	$(BDIR)/threshold $(BDIR)/weightavg
-	
+	$(BDIR)/gammac $(BDIR)/log $(BDIR)/normalize $(BDIR)/pixelwisefilter $(BDIR)/pixelwisefilter_color $(BDIR)/power \
+	$(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/threshold $(BDIR)/weightavg
+
 DOC=$(DOCDIR)/tutorialEnglish.html
 
 CCFLAGS = -g -DUNIXIO -Wall -std=c99 -O2
@@ -60,6 +60,9 @@ $(BDIR)/normalize:	$(CDIR)/normalize.c $(IDIR)/lnormalize.h $(IDIR)/mcimage.h $(
 $(BDIR)/pixelwisefilter:	$(CDIR)/pixelwisefilter.c $(IDIR)/lpixelwisefilter.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lpixelwisefilter.o
 	$(CC) $(CCFLAGS) $(CCINCLUDE) -I$(IDIR) $(CDIR)/pixelwisefilter.c $(ODIR)/lpixelwisefilter.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/pixelwisefilter
 
+$(BDIR)/pixelwisefilter_color:	$(CDIR)/pixelwisefilter_color.c $(IDIR)/lpixelwisefilter_color.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lpixelwisefilter_color.o
+	$(CC) $(CCFLAGS) $(CCINCLUDE) -I$(IDIR) $(CDIR)/pixelwisefilter_color.c $(ODIR)/lpixelwisefilter_color.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/pixelwisefilter_color
+
 $(BDIR)/power:	$(CDIR)/power.c $(IDIR)/lpower.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lpower.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/power.c $(ODIR)/lpower.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/power
 
@@ -115,6 +118,9 @@ $(ODIR)/lnormalize.o:	$(LDIR)/lnormalize.c $(IDIR)/lnormalize.h $(IDIR)/mcimage.
 
 $(ODIR)/lpixelwisefilter.o:	$(LDIR)/lpixelwisefilter.c $(IDIR)/lpixelwisefilter.h $(IDIR)/mcimage.h $(IDIR)/tools.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lpixelwisefilter.c -o $(ODIR)/lpixelwisefilter.o
+
+$(ODIR)/lpixelwisefilter_color.o:	$(LDIR)/lpixelwisefilter_color.c $(IDIR)/lpixelwisefilter_color.h $(IDIR)/mcimage.h $(IDIR)/tools.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lpixelwisefilter_color.c -o $(ODIR)/lpixelwisefilter_color.o
 
 $(ODIR)/lpower.o:	$(LDIR)/lpower.c $(IDIR)/lpower.h $(IDIR)/mcimage.h $(IDIR)/tools.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lpower.c -o $(ODIR)/lpower.o

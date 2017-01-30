@@ -82,9 +82,7 @@ int lpixelwisefilter(const struct xvimage* im, const double sigma, struct xvimag
                     sum_uw += pim[newpixindex] * w;
                 }
             }
-            //printf("%f, %f, %f\n", sum_w, sum_uw, 1/sum_w * sum_uw);
             pnewim[pixindex] = (char) 1/sum_w * sum_uw; // REVISAR
-            //printf("%d\n", pnewim[pixindex]);
         }
         else {
             pnewim[pixindex] = 0; // It could be tryed something similar of average filter.

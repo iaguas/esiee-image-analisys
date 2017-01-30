@@ -1,27 +1,27 @@
 /******************************************************************/
-/* CGA pixelwise implementation filter image function             */
+/* CGA pixel wise implementation filter color image function      */
 /* Project of Image analysis and processing - ESIEE               */
 /* Iñigo Aguas Ardaiz                                             */
-/* 28th January 2017                                              */
+/* 29th January 2017                                              */
 /******************************************************************/
-
+ 
 #include <stdio.h> 
 #include <stdint.h>
 #include <stdlib.h> 
 #include <mcimage.h>
 #include <tools.h>
-#include <lpixelwisefilter.h>
+#include <lpixelwisefilter_color.h>
 
-/*      
- *  INPUT: a grey scale image to make to apply a filter witch size is introduced too.
- *  REQUISITES: 
+/*
+ *  INPUT: a color image to make to apply a filter witch size is introduced too.
+ *  REQUISITES: an odd number for filter.
  *  OUTPUT: an image with filter applied.
  */
 int main(int argc, char **argv) {
 	
-    double sigma;
-    struct xvimage *im, *outim;
- 
+    int sigma;
+    struct xvimage *r, *g, *b, *outr, *outg, *outb;
+    
     // Checking inputs
     if (argc < 4) {
         fprintf(stderr, "usage: %s in.pgm out.pgm\n sigma", argv[0]);
@@ -29,23 +29,27 @@ int main(int argc, char **argv) {
     }
  
     // Reading image
-    im = readimage(argv[1]);
-    if (im == NULL) {
+    readrgbimage(argv[1], &r, &g, &b);
+    if (r == NULL || g == NULL || b == NULL) {
         fprintf(stderr, "%s: read image failed\n", argv[0]);
         exit(2);
     }
 
     // Calculating filter & image processing
     sigma = atof(argv[3]);
-    if (lpixelwisefilter(im, sigma, &outim)) {
-        fprintf(stderr, "%s: function lpixelwisefilter failed\n", argv[0]);
+    if (lpixelwisefilter_color(r,g,b, sigma, &outr,&outg,&outb)) {
+        fprintf(stderr, "%s: function lpixelwisefilter_color failed\n", argv[0]);
         exit(3);
     }
  
     // Writing result and finishing
-    writeimage(outim, argv[2]);
-    freeimage(outim);
-    freeimage(im);
- 
+    writergbimage(outr, outg, outb, argv[2]);
+    freeimage(r);
+    freeimage(g);
+    freeimage(b);
+    freeimage(outr);
+    freeimage(outg);
+    freeimage(outb);
+
     return 0;
 }
