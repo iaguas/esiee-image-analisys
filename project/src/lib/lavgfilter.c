@@ -37,7 +37,7 @@ int lavgfilter(const struct xvimage* im, const int fsize, struct xvimage** newim
 
     // Inicialitazion of a new image
     *newim = allocimage(NULL, rs, cs, 1, VFF_TYP_1_BYTE);
-    if (newim == NULL) {   
+    if (*newim == NULL) {   
         fprintf(stderr,"lavgfilter: image alloc failed\n");
         return 2;
     }

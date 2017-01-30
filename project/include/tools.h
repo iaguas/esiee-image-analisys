@@ -20,6 +20,22 @@ _a > _b ? _a : _b; })
 __typeof__ (b) _b = (b); \
 _a < _b ? _a : _b; })
 
+// EUCLIDEAN DISTANCE
+#define sqeuclideandist(a,b) \
+({ __typeof__ (a) _a = (a); \
+__typeof__ (b) _b = (b); \
+(_a-_b)*(_a-_b); })
+
+/*
+ * Struct for parameters of cga.
+ */
+struct cgaparam {
+    int winsize;
+    int rewinsize;
+    double sigma;
+    double h;
+};
+
 /*
  *  INPUT: a matrix with the pixeles of an image and the number of pixeles.
  *  REQUISITES: the number of pixeles must be real.
@@ -70,7 +86,8 @@ int isBorder(
     const int position,
     const int a,
     const int rs,
-    const int cs);
+    const int cs
+);
 
 /*
  *  INPUT: a filter and its size.
@@ -79,4 +96,15 @@ int isBorder(
  */
 void generateAvgFilter(
     double **filter,
-    const int size);
+    const int size
+);
+
+/*
+ *  INPUT: value of sigma and if image is grayscale (1) or not (0).
+ *  REQUISITES: none.
+ *  OUTPUT: structure with params adjusted to project. 1 if all fails.
+ */
+int genCGAParameters(
+    struct cgaparam *params,
+    const char grayscale
+);

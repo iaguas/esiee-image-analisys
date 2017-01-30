@@ -182,3 +182,67 @@ void generateAvgFilter(
     
     *filter = f;
 } // END generateAvgFilter
+
+
+
+/* ====================================
+ *  INPUT: value of sigma and if image is grayscale (1) or not (0).
+ *  REQUISITES: none.
+ *  OUTPUT: structure with params adjusted to project. 1 if all fails.
+ */
+int genCGAParameters(
+                     struct cgaparam* params,
+                     const char grayscale)
+/* ==================================== */
+#undef F_NAME
+#define F_NAME "genCGAParameters"
+{
+    if (grayscale) 
+        if ((params->sigma>0.0) && (params->sigma<=15.0)){
+            params->winsize = 3;
+            params->rewinsize = 21;
+            params->h = 0.4 * params->sigma;
+        }
+        else if ((params->sigma>15.0) && (params->sigma<=30.0)){
+            params->winsize = 5;
+            params->rewinsize = 21;
+            params->h = 0.4 * params->sigma;
+        }
+        else if ((params->sigma>30.0) && (params->sigma<=45.0)){
+            params->winsize = 7;
+            params->rewinsize = 35;
+            params->h = 0.35 * params->sigma;
+        }
+        else if ((params->sigma>45.0) && (params->sigma<=75.0)){
+            params->winsize = 9;
+            params->rewinsize = 35;
+            params->h = 0.35 * params->sigma;
+        } 
+        else if ((params->sigma>75.0) && (params->sigma<=100.0)){
+            params->winsize = 11;
+            params->rewinsize = 35;
+            params->h = 0.35 * params->sigma;
+        }
+        else // Sigma is not correct.
+            return 1; 
+    else
+        if ((params->sigma>0.0) && (params->sigma<=25.0)){
+            params->winsize = 3;
+            params->rewinsize = 21;
+            params->h = 0.55 * params->sigma;
+        }
+        else if ((params->sigma>25.0) && (params->sigma<=55.0)){
+            params->winsize = 5;
+            params->rewinsize = 35;
+            params->h = 0.4 * params->sigma;
+        }
+        else if ((params->sigma>55.0) && (params->sigma<=100.0)){
+            params->winsize = 7;
+            params->rewinsize = 35;
+            params->h = 0.35 * params->sigma;
+        }
+        else // Sigma is not correct
+            return 1;
+
+    return 0;
+}

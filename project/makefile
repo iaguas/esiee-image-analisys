@@ -1,6 +1,7 @@
 EXE=$(BDIR)/addconst $(BDIR)/avgfilter $(BDIR)/avgfilter_color $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/equalize \
-$(BDIR)/gammac $(BDIR)/log $(BDIR)/normalize $(BDIR)/power $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/threshold $(BDIR)/weightavg
-
+	$(BDIR)/gammac $(BDIR)/log $(BDIR)/normalize $(BDIR)/pixelwisefilter $(BDIR)/power $(BDIR)/ppm2pgm $(BDIR)/pgm2ppm \
+	$(BDIR)/threshold $(BDIR)/weightavg
+	
 DOC=$(DOCDIR)/tutorialEnglish.html
 
 CCFLAGS = -g -DUNIXIO -Wall -std=c99 -O2
@@ -17,8 +18,11 @@ CC = cc
 # Documentation, if not already comiled, can be compiled thanks to 'make doc'
 # You can also do a 'make clean' if you want
 
-all:	$(EXE) 
+all:	$(EXE)
 doc:    $(DOC)
+
+pruebas: $(CDIR)/pruebas.c $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o
+	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/pruebas.c $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/pruebas
 
 
 # ===============================================================
@@ -52,6 +56,9 @@ $(BDIR)/log:	$(CDIR)/log.c $(IDIR)/llog.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(OD
 
 $(BDIR)/normalize:	$(CDIR)/normalize.c $(IDIR)/lnormalize.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lnormalize.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/normalize.c $(ODIR)/lnormalize.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/normalize
+
+$(BDIR)/pixelwisefilter:	$(CDIR)/pixelwisefilter.c $(IDIR)/lpixelwisefilter.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lpixelwisefilter.o
+	$(CC) $(CCFLAGS) $(CCINCLUDE) -I$(IDIR) $(CDIR)/pixelwisefilter.c $(ODIR)/lpixelwisefilter.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/pixelwisefilter
 
 $(BDIR)/power:	$(CDIR)/power.c $(IDIR)/lpower.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lpower.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/power.c $(ODIR)/lpower.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/power
@@ -105,6 +112,9 @@ $(ODIR)/llog.o:	$(LDIR)/llog.c $(IDIR)/llog.h $(IDIR)/mcimage.h $(IDIR)/tools.h
 
 $(ODIR)/lnormalize.o:	$(LDIR)/lnormalize.c $(IDIR)/lnormalize.h $(IDIR)/mcimage.h $(IDIR)/tools.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lnormalize.c -o $(ODIR)/lnormalize.o
+
+$(ODIR)/lpixelwisefilter.o:	$(LDIR)/lpixelwisefilter.c $(IDIR)/lpixelwisefilter.h $(IDIR)/mcimage.h $(IDIR)/tools.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lpixelwisefilter.c -o $(ODIR)/lpixelwisefilter.o
 
 $(ODIR)/lpower.o:	$(LDIR)/lpower.c $(IDIR)/lpower.h $(IDIR)/mcimage.h $(IDIR)/tools.h
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lpower.c -o $(ODIR)/lpower.o
