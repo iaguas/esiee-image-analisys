@@ -44,9 +44,11 @@
 *.pygstyle
 *.pygtex
 *.fdb*
+*.synctex.gz
 
 # Other parts of the project
 .~*
 bin/
 theory/
 CGA_2016_21_aguasari/
+project/img/cga/out/*
