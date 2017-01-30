@@ -1,8 +1,10 @@
 EXE=$(BDIR)/addconst $(BDIR)/avgfilter $(BDIR)/avgfilter_color $(BDIR)/deriche $(BDIR)/diffimage $(BDIR)/equalize \
 	$(BDIR)/gammac $(BDIR)/log $(BDIR)/normalize $(BDIR)/pixelwisefilter $(BDIR)/pixelwisefilter_color $(BDIR)/power \
-	$(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/threshold $(BDIR)/weightavg
+	$(BDIR)/ppm2pgm $(BDIR)/pgm2ppm $(BDIR)/threshold $(BDIR)/weightavg $(BDIR)/windowwisefilter
 
 DOC=$(DOCDIR)/tutorialEnglish.html
+
+REP=$(DOCDIR)/report/report.pdf
 
 CCFLAGS = -g -DUNIXIO -Wall -std=c99 -O2
 CCINCLUDE = -lm
@@ -20,6 +22,7 @@ CC = cc
 
 all:	$(EXE)
 doc:    $(DOC)
+report: $(REP)	
 
 pruebas: $(CDIR)/pruebas.c $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/pruebas.c $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/pruebas
@@ -71,6 +74,10 @@ $(BDIR)/threshold:	$(CDIR)/threshold.c $(IDIR)/lthreshold.h $(IDIR)/mcimage.h $(
 
 $(BDIR)/weightavg:	$(CDIR)/weightavg.c $(IDIR)/lweightavg.h $(IDIR)/lfilter.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lweightavg.o $(ODIR)/lfilter.o
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/weightavg.c $(ODIR)/lweightavg.o $(ODIR)/lfilter.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/weightavg
+
+$(BDIR)/windowwisefilter:	$(CDIR)/windowwisefilter.c $(IDIR)/lwindowwisefilter.h $(IDIR)/mcimage.h $(IDIR)/tools.h $(ODIR)/mcimage.o $(ODIR)/tools.o $(ODIR)/lwindowwisefilter.o
+	$(CC) $(CCFLAGS) $(CCINCLUDE) -I$(IDIR) $(CDIR)/windowwisefilter.c $(ODIR)/lwindowwisefilter.o $(ODIR)/mcimage.o $(ODIR)/tools.o -o $(BDIR)/windowwisefilter
+
 
 # ===============================================================
 # Library functions 
@@ -131,6 +138,10 @@ $(ODIR)/lthreshold.o:	$(LDIR)/lthreshold.c $(IDIR)/lthreshold.h $(IDIR)/mcimage.
 $(ODIR)/lweightavg.o:	$(LDIR)/lweightavg.c $(IDIR)/lweightavg.h $(IDIR)/lfilter.h $(IDIR)/mcimage.h 
 	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lweightavg.c -o $(ODIR)/lweightavg.o
 
+$(ODIR)/lwindowwisefilter.o:	$(LDIR)/lwindowwisefilter.c $(IDIR)/lwindowwisefilter.h $(IDIR)/mcimage.h $(IDIR)/tools.h
+	$(CC) -c $(CCFLAGS) -I$(IDIR) $(LDIR)/lwindowwisefilter.c -o $(ODIR)/lwindowwisefilter.o
+
+
 $(BDIR)/ppm2pgm:	$(CDIR)/ppm2pgm.c $(IDIR)/mcimage.h $(LDIR)/mcimage.c
 	$(CC) $(CCFLAGS) -I$(IDIR) $(CDIR)/ppm2pgm.c  $(ODIR)/mcimage.o -o $(BDIR)/ppm2pgm
 
@@ -141,6 +152,10 @@ $(BDIR)/pgm2ppm:	$(CDIR)/pgm2ppm.c $(IDIR)/mcimage.h $(LDIR)/mcimage.c
 # ===============================================================
 $(DOCDIR)/tutorialEnglish.html: $(DOCDIR)/tutorialEnglish.tex
 	cd $(DOCDIR); htlatex ./tutorialEnglish; cd ..
+
+$(DOCDIR)/report/report.pdf: $(DOCDIR)/report/report.tex
+	cd $(DOCDIR)/report; latexmk -pdf report.tex
+
 
 clean:
 	rm -rf *~ $(ODIR)/* $(IDIR)/*~ $(CDIR)/*~ $(LDIR)/*~ $(DOCDIR)/*~ 
